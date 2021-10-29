@@ -1,0 +1,36 @@
+/*Align everything*/
+body {
+    font-family: Poppins, sans-serif;
+    align-items: center;
+    justify-content: center;
+    display:flex;
+    flex-direction: column;
+}
+
+/*Style for the text inputs*/
+.infoText{
+    margin-bottom: 10px;
+    font-family: Poppins, sans-serif;
+    width: 25%;
+}
+
+/*Style for the buttons in center*/
+.addBtn {
+    background-color: blueviolet;
+    color: white;
+    margin-bottom: 10px;
+    font-family: Poppins, sans-serif;
+    width: 25%;
+}
+
+/*Style for the buttons that show information*/
+.infoBtn {
+    background-color: rgb(0, 154, 165);
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: Poppins, sans-serif;
+    width: 25%;
+}
+
+
