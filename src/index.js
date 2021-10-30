@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, push, set, onValue } from 'firebase/database';
+import { getDatabase, ref, push, set, onValue, get } from 'firebase/database';
 import { getFirebaseConfig } from './firebase-config';
 
 //Inicializar firebase
@@ -15,6 +15,8 @@ const voteID = document.getElementById("idVote");
 const voteBtn = document.getElementById("voteBtn");
 const seeVoteBtn = document.getElementById("seeVoteBtn");
 
+let votesList = [];
+let candidatesList = [];
 
 //Adding objects to firebase
 function registerCandidate(candidate){
@@ -51,6 +53,7 @@ function updateCandidates(data){
     let list = "";
     Object.keys(data).forEach((key, index)=>{
         list += data[key].id + " " + data[key].name + "\n";
+        candidatesList.push(data[key]);
     });
     alert(list);
 }
@@ -66,12 +69,15 @@ const getVotes = (e, event) => {
     onValue(newVoteRef, (snapshot)=>{
         const dataVotes = snapshot.val();
         const total = Object.keys(dataVotes).length;
+        console.log(dataVotes);
+        console.log(candidatesList);
 
         //Get candidates from firebase
-        onValue(candidateRef, (snapshot)=>{
+        get(candidateRef).then((snapshot)=>{
             const dataCan =  snapshot.val();
 
             //Go through list of candidates
+            let finalVotes = "";
             Object.keys(dataCan).forEach((key, index)=>{
                 let votesCandidate = 0;
                 Object.keys(dataVotes).forEach((keyV, indexV)=>{
@@ -81,19 +87,12 @@ const getVotes = (e, event) => {
                 });
                 //Create alert with vote porcentage
                 let candidatePercent = votesCandidate/total * 100;
-                let list = (dataCan[key].name + " - " + candidatePercent + "%");
-                showVotes(list);
+                finalVotes+=(dataCan[key].name + " - " + candidatePercent + "%" + "\n");
+                
             });
+            alert(finalVotes);
         });
     });
-}
-
-function showVotes(list){
-    const candidatesVotes = [];
-    candidatesVotes.push(list);
-    candidatesVotes.forEach((item, index) => {
-        console.log(`${index} : ${item}`);
-      });
 }
 
 //Method to add candidate to an object
